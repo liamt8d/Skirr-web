@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "cf:build": "next build && node scripts/ensure-middleware-manifest.mjs && bunx opennextjs-cloudflare@latest build",
     "start": "next start -p 8080",
     "lint": "eslint"
   },
