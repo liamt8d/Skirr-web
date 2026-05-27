@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend('re_JSgTVyY3_8qPjWpTcPVMphsuhSDP3Vk6L');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface ContactData {
     nombre: string;
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     try {
         const data: ContactData = await request.json();
 
-        const discordWebhookUrl = 'https://discord.com/api/webhooks/1488356789652160642/Y0_UCqVtWkSQY9R66LJO8FR1XV1BI4jKoFUblNLFDGAZBcZ20vl8gCsNLQ0Lqq_U98Fm'; 
+        const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL; 
 
         const discordMessage = {
             embeds: [{
@@ -38,15 +38,17 @@ export async function POST(request: NextRequest) {
             }]
         };
 
-        try {
-            await fetch(discordWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(discordMessage)
-            });
-            console.log("Mensaje de Discord enviado!");
-        } catch (discordError) {
-            console.error("No se pudo conectar con Discord (bloqueo local), ignorando...", discordError);
+        if (discordWebhookUrl) {
+            try {
+                await fetch(discordWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(discordMessage)
+                });
+                console.log("Mensaje de Discord enviado!");
+            } catch (discordError) {
+                console.error("No se pudo conectar con Discord:", discordError);
+            }
         }
 
         await resend.emails.send({
