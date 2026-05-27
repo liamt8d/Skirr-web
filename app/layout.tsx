@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   title: 'Skirr | Soluciones a medida para Discord y Minecraft',
   description: 'Soluciones a medida para Discord y Minecraft',
   icons: {
-    icon: '/favicon.ico', 
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    icon: '/skirr.ico',
+    shortcut: '/skirr.ico',
+    apple: '/skirr.ico',
   },
 };
 
